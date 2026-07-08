@@ -1,16 +1,13 @@
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, redirect, render_template, url_for, session
 from flask import request
 from flask_sqlalchemy import SQLAlchemy 
 from datetime import datetime
-#from app import app, db
-
 from werkzeug.security import generate_password_hash
-
-# in register():
 
 
 
 app = Flask(__name__)
+app.secret_key = "cf0fa2ac5471abc98c5f9b228b726a3c"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///userr.db"
 db = SQLAlchemy(app)
 
@@ -22,7 +19,8 @@ class User(db.Model):
     datetime = db.Column(db.DateTime, default=datetime.utcnow)
 
 with app.app_context():
-    db.create_all()         
+    db.create_all()    
+
 
 @app.route('/')
 def home():
@@ -60,8 +58,30 @@ def register():
         return redirect(url_for('home'))
     return render_template('register.html')
 
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+
+    ADMIN_PASSWORD = "your-secret-password"
+    if request.method == 'POST':
+        password = request.form.get('password')
+        
+        if password == ADMIN_PASSWORD:
+            session['is_admin'] = True
+            return redirect(url_for('show_users'))
+        return "Wrong passsword", 401
+    
+    return '''
+        <form method="post">
+            <input type="password" name="password" placeholder="Admin password">
+            <button type="submit">Login</button>
+        </form>
+    '''
+
+
 @app.route('/admin/users')
 def show_users():
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
     users = User.query.order_by(User.id).all()
     return render_template('users.html', users=users)
 
