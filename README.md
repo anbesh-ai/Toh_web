@@ -4,13 +4,13 @@ A small Flask web project I'm building to practice web development — user regi
 
 This is a personal learning/practice project, so the structure and features will keep evolving as I learn.
 
-## 📸 Screenshot
+## Screenshot
 
-![Project mascot](./screenshots/flask_coding_illustration.png)
+![./screenshots/flask_coding_illustration.png]
 
 
 
-## ✨ Features
+## Features
 
 - User registration form (stores data via SQLAlchemy + SQLite)
 - Passwords are hashed with `werkzeug.security` before being stored
@@ -18,14 +18,14 @@ This is a personal learning/practice project, so the structure and features will
 - Simple session-based login to protect the admin page
 - Pages: Home, Welcome, About, Visit, Registration
 
-## 🛠️ Built With
+## Built With
 
 - [Flask](https://flask.palletsprojects.com/)
 - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/)
 - SQLite
 - Jinja2 templates
 
-## 🚀 Running Locally
+## Running Locally
 
 ```bash
 # activate your virtual environment first, then:
@@ -51,7 +51,7 @@ Toh tech Flask/
 └── README.md
 ```
 
-## 📝 Notes
+## Notes
 
 This project is a work in progress, built for practicing:
 - Flask routing
