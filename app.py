@@ -4,6 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 #from app import app, db
 
+from werkzeug.security import generate_password_hash
+
+# in register():
+
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///userr.db"
@@ -38,16 +43,27 @@ def visit():
 
 @app.route('/registration', methods=["GET", 'POST'])
 def register():
+
+   
+
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
         description = request.form.get('description')
+
+        hashed_pw = generate_password_hash(password)
+        new_user = User(username=username, password=hashed_pw, description=description)
+   
         print(f"Username: {username}, Password: {password}, Description: {description}")
-        new_user = User(username=username, password=password, description=description)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('register.html')
+
+@app.route('/admin/users')
+def show_users():
+    users = User.query.order_by(User.id).all()
+    return render_template('users.html', users=users)
 
 
 if __name__ == "__main__":

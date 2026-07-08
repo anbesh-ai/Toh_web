@@ -6,6 +6,7 @@
 <a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('about') }}">About</a>
 <a class="nav-link {% if request.path == '/visit' %}active{% endif %}" href="{{ url_for('visit') }}">Visit</a>
 <a class="nav-link {% if request.path == '/registration' %}active{% endif %}" href="{{ url_for('register') }}">Register</a>
-    </div>
+<a class="nav-link {% if request.path == '/admin/users' %}active{% endif %}" href="{{ url_for('admin_users') }}">Users</a>   
+</div>
   </div>
 </nav>
