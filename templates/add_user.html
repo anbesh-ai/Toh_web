@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block welcome%}  {% endblock %}
+{% block map%}  {% endblock %}
+
+{% block title %}Add User{% endblock %}
+
+{% block content %}
+<h1>Add New User</h1>
+
+<form method="POST" class="col-md-6">
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" required>
+    </div>
+
+     <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea name="description" class="form-control" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Add User</button>
+    <a href="{{ url_for('show_users') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

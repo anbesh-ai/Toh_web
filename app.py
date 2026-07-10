@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, url_for, session
+from flask import Flask, flash, redirect, render_template, url_for, session
 from flask import request
 from flask_sqlalchemy import SQLAlchemy 
 from datetime import datetime
@@ -70,7 +70,8 @@ def admin_login():
             return redirect(url_for('show_users'))
         return "Wrong passsword", 401
     
-    return '''
+    return redirect('admin_login')
+'''
         <form method="post">
             <input type="password" name="password" placeholder="Admin password">
             <button type="submit">Login</button>
@@ -84,6 +85,54 @@ def show_users():
         return redirect(url_for('admin_login'))
     users = User.query.order_by(User.id).all()
     return render_template('users.html', users=users)
+
+
+@app.route('/admin/users/add', methods=['GET', 'POST'])
+def add_user():
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        description = request.form.get('description')
+
+        hashed_pw = generate_password_hash(password)
+        new_user = User(username=username, password=hashed_pw, description=description)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash("User added successfully!", "success")
+        return redirect(url_for('show_users'))
+    return render_template('add_user.html')
+
+@app.route('/admin/users/edit/<int:id>', methods = ['GET','POST'])
+def edit_user(id):
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    
+    user = User.query.get_or_404(id)
+
+    if request.method == 'POST' :
+        user.username =request.form['username']
+        user.description =request.form['description']
+        db.session.commit()
+
+        flash("User updated successsfully!", "success")
+        return redirect(url_for("show_users"))
+    
+    return render_template("edit_user.html", user=user)
+
+@app.route('/admin/users/delete/<int:id>', methods=['POST'])
+def delete_user(id):
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
+
+    flash('User deleted successfullu!' , "danger")
+    return redirect(url_for('show_users'))
 
 
 if __name__ == "__main__":
