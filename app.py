@@ -69,7 +69,7 @@ def admin_login():
             session['is_admin'] = True
             return redirect(url_for('show_users'))
         
-        flash('Wrong password, try again.', 'danger')
+        # flash('Wrong password, try again.', 'danger')
         return redirect(url_for('admin_login'))
     
     return render_template('admin_login.html')
@@ -97,7 +97,7 @@ def add_user():
         db.session.add(new_user)
         db.session.commit()
 
-        flash("User added successfully!", "success")
+        # flash("User added successfully!", "success")
         return redirect(url_for('show_users'))
     return render_template('add_user.html')
 
@@ -113,7 +113,7 @@ def edit_user(id):
         user.description =request.form['description']
         db.session.commit()
 
-        flash("User updated successsfully!", "success")
+        # flash("User updated successsfully!", "success")
         return redirect(url_for("show_users"))
     
     return render_template("edit_user.html", user=user)
@@ -127,7 +127,7 @@ def delete_user(id):
     db.session.delete(user)
     db.session.commit()
 
-    flash('User deleted successfullu!' , "danger")
+    # flash('User deleted successfullu!' , "danger")
     return redirect(url_for('show_users'))
 
 
