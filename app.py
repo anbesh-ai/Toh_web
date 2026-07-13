@@ -60,7 +60,7 @@ def register():
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
-    ADMIN_PASSWORD = "your-secret-password"
+    ADMIN_PASSWORD = "pew_"
     
     if request.method == 'POST':
         password = request.form.get('password')
@@ -132,4 +132,4 @@ def delete_user(id):
 
 
 if __name__ == "__main__":
-    app.run(port=5000)     
+    app.run(port=5000, debug="True")     
